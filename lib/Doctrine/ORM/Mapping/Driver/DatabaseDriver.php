@@ -288,14 +288,14 @@ class DatabaseDriver implements MappingDriver
                 $allForeignKeyColumns = array_merge($allForeignKeyColumns, $foreignKey->getLocalColumns());
             }
 
-            if (! $table->hasPrimaryKey()) {
-                throw new MappingException(
-                    'Table ' . $table->getName() . ' has no primary key. Doctrine does not ' .
-                    "support reverse engineering from tables that don't have a primary key."
-                );
-            }
+//            if (! $table->hasPrimaryKey()) {
+//                throw new MappingException(
+//                    'Table ' . $table->getName() . ' has no primary key. Doctrine does not ' .
+//                    "support reverse engineering from tables that don't have a primary key."
+//                );
+//            }
 
-            $pkColumns = $table->getPrimaryKey()->getColumns();
+            $pkColumns = $table->hasPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [];
 
             sort($pkColumns);
             sort($allForeignKeyColumns);
@@ -516,7 +516,7 @@ class DatabaseDriver implements MappingDriver
     private function getTablePrimaryKeys(Table $table)
     {
         try {
-            return $table->getPrimaryKey()->getColumns();
+            return $table->hasPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [];
         } catch (SchemaException $e) {
             // Do nothing
         }

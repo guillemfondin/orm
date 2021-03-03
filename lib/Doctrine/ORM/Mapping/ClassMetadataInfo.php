@@ -359,7 +359,7 @@ class ClassMetadataInfo implements ClassMetadata
      * READ-ONLY: The field names of all fields that are part of the identifier/primary key
      * of the mapped entity class.
      *
-     * @psalm-var list<string>
+     * @var array
      */
     public $identifier = [];
 
@@ -1448,7 +1448,7 @@ class ClassMetadataInfo implements ClassMetadata
 
         if (Type::hasType($mapping['type']) && Type::getType($mapping['type'])->canRequireSQLConversion()) {
             if (isset($mapping['id']) && $mapping['id'] === true) {
-                 throw MappingException::sqlConversionNotAllowedForIdentifiers($this->name, $mapping['fieldName'], $mapping['type']);
+                throw MappingException::sqlConversionNotAllowedForIdentifiers($this->name, $mapping['fieldName'], $mapping['type']);
             }
 
             $mapping['requireSQLConversion'] = true;
@@ -1518,11 +1518,11 @@ class ClassMetadataInfo implements ClassMetadata
 
             if (! in_array($mapping['fieldName'], $this->identifier)) {
                 if (isset($mapping['joinColumns']) && count($mapping['joinColumns']) >= 2) {
-                    throw MappingException::cannotMapCompositePrimaryKeyEntitiesAsForeignId(
-                        $mapping['targetEntity'],
-                        $this->name,
-                        $mapping['fieldName']
-                    );
+//                    throw MappingException::cannotMapCompositePrimaryKeyEntitiesAsForeignId(
+//                        $mapping['targetEntity'],
+//                        $this->name,
+//                        $mapping['fieldName']
+//                    );
                 }
 
                 $this->identifier[]              = $mapping['fieldName'];
@@ -2201,10 +2201,10 @@ class ClassMetadataInfo implements ClassMetadata
         $mapping = $this->associationMappings[$fieldName];
 
         //if (isset($mapping['inherited']) && (count($overrideMapping) !== 1 || ! isset($overrideMapping['fetch']))) {
-            // TODO: Deprecate overriding the fetch mode via association override for 3.0,
-            // users should do this with a listener and a custom attribute/annotation
-            // TODO: Enable this exception in 2.8
-            //throw MappingException::illegalOverrideOfInheritedProperty($this->name, $fieldName);
+        // TODO: Deprecate overriding the fetch mode via association override for 3.0,
+        // users should do this with a listener and a custom attribute/annotation
+        // TODO: Enable this exception in 2.8
+        //throw MappingException::illegalOverrideOfInheritedProperty($this->name, $fieldName);
         //}
 
         if (isset($overrideMapping['joinColumns'])) {
@@ -2266,8 +2266,8 @@ class ClassMetadataInfo implements ClassMetadata
         $mapping = $this->fieldMappings[$fieldName];
 
         //if (isset($mapping['inherited'])) {
-            // TODO: Enable this exception in 2.8
-            //throw MappingException::illegalOverrideOfInheritedProperty($this->name, $fieldName);
+        // TODO: Enable this exception in 2.8
+        //throw MappingException::illegalOverrideOfInheritedProperty($this->name, $fieldName);
         //}
 
         if (isset($mapping['id'])) {
@@ -2409,9 +2409,9 @@ class ClassMetadataInfo implements ClassMetadata
     private function _isInheritanceType($type)
     {
         return $type === self::INHERITANCE_TYPE_NONE ||
-                $type === self::INHERITANCE_TYPE_SINGLE_TABLE ||
-                $type === self::INHERITANCE_TYPE_JOINED ||
-                $type === self::INHERITANCE_TYPE_TABLE_PER_CLASS;
+            $type === self::INHERITANCE_TYPE_SINGLE_TABLE ||
+            $type === self::INHERITANCE_TYPE_JOINED ||
+            $type === self::INHERITANCE_TYPE_TABLE_PER_CLASS;
     }
 
     /**
@@ -3418,7 +3418,7 @@ class ClassMetadataInfo implements ClassMetadata
             isset($this->associationMappings[$fieldName]) ||
             isset($this->embeddedClasses[$fieldName])
         ) {
-            throw MappingException::duplicateFieldMapping($this->name, $fieldName);
+//            throw MappingException::duplicateFieldMapping($this->name, $fieldName);
         }
     }
 
